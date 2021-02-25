@@ -9,7 +9,7 @@
   <artifactId>discordtsbot</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>DiscordTeamspeakBot</name>
+  <name>dev.crystall.teamspeakbot.DiscordTeamspeakBot</name>
   <description>Mimics the function of teamspeak chat and voice channels</description>
 
   <properties>
