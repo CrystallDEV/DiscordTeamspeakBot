@@ -1,4 +1,4 @@
-package dev.crystall.teamspeakbot.manager;
+package dev.crystall.teamspeakbot.events;
 
 import dev.crystall.teamspeakbot.DiscordTeamspeakBot;
 import discord4j.core.GatewayDiscordClient;
@@ -55,7 +55,12 @@ public class EventManager {
     if (voiceState.getChannel().block() == null) {
       return;
     }
-    // TODO check if the channel is the same and prevent double assigning a role
+
+    // Checks if the channel is the same to prevent double assigning a role
+    if (oldVoiceState.isPresent() && oldVoiceState.get().getChannelId().get().equals(voiceState.getChannelId().get())) {
+      return;
+    }
+
     String channelName = voiceState.getChannel().block().getName();
     DiscordTeamspeakBot.getChannelManager().grantChannelRole(voiceState.getGuild().block(), channelName, voiceState.getUser().block());
   }

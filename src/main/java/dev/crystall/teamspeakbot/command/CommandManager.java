@@ -1,8 +1,6 @@
-package dev.crystall.teamspeakbot.manager;
+package dev.crystall.teamspeakbot.command;
 
 import dev.crystall.teamspeakbot.Constants;
-import dev.crystall.teamspeakbot.command.BaseCommand;
-import dev.crystall.teamspeakbot.command.CommandType;
 import dev.crystall.teamspeakbot.command.commands.CmdCreateTeamspeakChannel;
 import dev.crystall.teamspeakbot.command.commands.CmdPingPong;
 import discord4j.core.event.domain.message.MessageCreateEvent;

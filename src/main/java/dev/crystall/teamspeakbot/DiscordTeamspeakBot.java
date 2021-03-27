@@ -1,8 +1,9 @@
 package dev.crystall.teamspeakbot;
 
-import dev.crystall.teamspeakbot.manager.ChannelManager;
-import dev.crystall.teamspeakbot.manager.CommandManager;
-import dev.crystall.teamspeakbot.manager.EventManager;
+import dev.crystall.teamspeakbot.channel.ChannelManager;
+import dev.crystall.teamspeakbot.command.CommandManager;
+import dev.crystall.teamspeakbot.database.DatabaseConnector;
+import dev.crystall.teamspeakbot.events.EventManager;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
@@ -20,6 +21,9 @@ public class DiscordTeamspeakBot {
   private static User self;
 
   @Getter
+  private static GatewayDiscordClient client;
+
+  @Getter
   private static EventManager eventManager;
 
   @Getter
@@ -28,8 +32,11 @@ public class DiscordTeamspeakBot {
   @Getter
   private static ChannelManager channelManager;
 
+  @Getter
+  private static DatabaseConnector databaseConnector;
+
   public DiscordTeamspeakBot() {
-    GatewayDiscordClient client = DiscordClientBuilder.create(token).build().login().block();
+    client = DiscordClientBuilder.create(token).build().login().block();
 
     if (client == null) {
       throw new RuntimeException("Unable to connect to server");
@@ -37,6 +44,13 @@ public class DiscordTeamspeakBot {
 
     client.getEventDispatcher().on(ReadyEvent.class).subscribe(event -> {
       self = event.getSelf();
+
+      // if we cant connect to the database, exit the application
+      databaseConnector = new DatabaseConnector();
+      if (!databaseConnector.connectToDatabase()) {
+        System.exit(1);
+      }
+
       setupManager(client);
       System.out.printf("Logged in as %s#%s%n", self.getUsername(), self.getDiscriminator());
     });
