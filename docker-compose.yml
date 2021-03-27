@@ -1,0 +1,10 @@
+version: '3'
+services:
+  discorddb:
+    image: mongo:4.2.3-bionic
+    container_name: discorddb
+    environment:
+      - MONGODB_USER=discorddb
+      - MONGODB_PASS=discorddb
+    ports:
+      - 27017:27017
